@@ -10,7 +10,6 @@ const Home = () => {
  	const loadTask = async () => {
 		const response = await fetch ("https://playground.4geeks.com/todo/users/stevenyat07")
 		const data = await response.json()
-		console.log(data)
 		setTaskList(data.todos)
  	}
 	const addTask = async () => {
@@ -24,10 +23,15 @@ const Home = () => {
 		const data = await response.json()
 		loadTask()
 	}
-	
-	useEffect(()=> {
+	const deleteTask = async (taskItem) => {
+		const response = await fetch ("https://playground.4geeks.com/todo/todos/"+taskItem.id, {
+			method: "DELETE"
+		} )
 		loadTask()
-	},[])
+	}
+		useEffect (() => {
+		loadTask()
+	}, [])
 
 
 		return (
@@ -58,7 +62,7 @@ const Home = () => {
 							className="d-flex border-bottom justify-content-between align-items-center m-0 ps-4 p-2">
 							{task.label}
 							<button 
-								onClick={()=> setTaskList(taskList.filter((item,ind)=> ind !== index)) }
+								onClick={()=> deleteTask(task) }
 								className="btn-close">
 							</button> 
 						</p>)
